@@ -1,0 +1,1 @@
+How many instruction has the turing machine: 
