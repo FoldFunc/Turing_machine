@@ -12,7 +12,8 @@ fn validate_instructions(instructions: &Vec<(String, String)>) -> bool {
     for (ins_0, ins_1) in instructions {
         //println!("Instructions if 0: {}", ins_0);
         //println!("Instructions if 1: {}", ins_1);
-        if ins_0.len() > 3 || ins_1.len() > 3 {
+        if ins_0.len() != 3 && ins_1.len() != 3 {
+            println!("Number has not enough or too many characters");
             return false;
         }
         /*
@@ -26,9 +27,11 @@ fn validate_instructions(instructions: &Vec<(String, String)>) -> bool {
                 if c == first_letter {
                     println!("{} is the first letter", c);
                     if !c.is_digit(10) {
+                        println!("C is not a digit");
                         return false;
                     }
-                    if c != '1' || c != '0' {
+                    if c != '1' && c != '0' {
+                        println!("C is not a 0 or a 1");
                         return false;
                     }
                 }
@@ -36,7 +39,8 @@ fn validate_instructions(instructions: &Vec<(String, String)>) -> bool {
             if let Some(second_letter) = ins_0.chars().nth(1) {
                 if c ==  second_letter{
                     println!("{} is the second letter", c);
-                    if c != 'R' || c != 'L' {
+                    if c != 'R' && c != 'L' {
+                        println!("C is not L or R");
                        return false; 
                     }
                 }
@@ -45,12 +49,52 @@ fn validate_instructions(instructions: &Vec<(String, String)>) -> bool {
                 if c == third_letter{
                     println!("{} is the third letter", c);
                     if !c.is_digit(10) {
+                        println!("C is not a digit");
                         return false;
                     }
-                    if c != '1' || c != '0' {
+                    if c != '1' && c != '0' {
+                        println!("C is not a 1 or a 0");
                         return false;
                     }
                 }
+            }
+            for c in ins_1.chars() {
+                if let Some(first_letter) = ins_1.chars().nth(0) {
+                    if c == first_letter {
+                        println!("{} is the first letter", c);
+                        if !c.is_digit(10) {
+                            println!("C is not a digit");
+                            return false;
+                        }
+                        if c != '1' && c != '0' {
+                            println!("C is not a 0 or a 1");
+                            return false;
+                        }
+                    }
+                }
+                if let Some(second_letter) = ins_1.chars().nth(1) {
+                    if c ==  second_letter{
+                        println!("{} is the second letter", c);
+                        if c != 'R' && c != 'L' {
+                            println!("C is not L or R");
+                           return false; 
+                        }
+                    }
+                }
+                if let Some(third_letter) = ins_1.chars().nth(2) {
+                    if c == third_letter{
+                        println!("{} is the third letter", c);
+                        if !c.is_digit(10) {
+                            println!("C is not a digit");
+                            return false;
+                        }
+                        if c != '1' && c != '0' {
+                            println!("C is not a 1 or a 0");
+                            return false;
+                        }
+                    }
+                }
+                
             }
             
         }
