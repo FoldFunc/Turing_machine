@@ -5,12 +5,55 @@ fn main() {
     let instr: Vec<(String, String)> = get_instructions(instr_count);
     println!("{:?}", instr);
     let instr_good: bool = validate_instructions(&instr);
+    println!("Is valid: {:?}", instr_good);
 }
 
 fn validate_instructions(instructions: &Vec<(String, String)>) -> bool {
     for (ins_0, ins_1) in instructions {
-        println!("Instructions if 0: {}", ins_0);
-        println!("Instructions if 1: {}", ins_1);
+        //println!("Instructions if 0: {}", ins_0);
+        //println!("Instructions if 1: {}", ins_1);
+        if ins_0.len() > 3 || ins_1.len() > 3 {
+            return false;
+        }
+        /*
+         * The input should look somthing like this:
+         * 1R0
+         * This means that if the machine sees 1 on the tape it should go Right
+         * and then listen to the instruction 0
+         */
+        for c in ins_0.chars() {
+            if let Some(first_letter) = ins_0.chars().nth(0) {
+                if c == first_letter {
+                    println!("{} is the first letter", c);
+                    if !c.is_digit(10) {
+                        return false;
+                    }
+                    if c != '1' || c != '0' {
+                        return false;
+                    }
+                }
+            }
+            if let Some(second_letter) = ins_0.chars().nth(1) {
+                if c ==  second_letter{
+                    println!("{} is the second letter", c);
+                    if c != 'R' || c != 'L' {
+                       return false; 
+                    }
+                }
+            }
+            if let Some(third_letter) = ins_0.chars().nth(2) {
+                if c == third_letter{
+                    println!("{} is the third letter", c);
+                    if !c.is_digit(10) {
+                        return false;
+                    }
+                    if c != '1' || c != '0' {
+                        return false;
+                    }
+                }
+            }
+            
+        }
     }
     return true;
 }
