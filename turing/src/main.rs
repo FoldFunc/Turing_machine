@@ -40,6 +40,9 @@ fn is_valid_instruction(instr: &str) -> bool {
         return false;
     }
     let chars: Vec<char> = instr.chars().collect();
+    if chars[0] == 'H' && chars[1] == 'L' && chars[2] == 'T' {
+        return true;
+    }
     (chars[0] == '0' || chars[0] == '1') &&
     (chars[1] == 'R' || chars[1] == 'L') &&
     (chars[2].is_ascii_digit() && chars[2].to_digit(10).unwrap() < 10)
@@ -52,8 +55,8 @@ fn validate_instructions(instructions: &Vec<(String, String)>) -> bool {
 fn execute_instructions(tape: &mut Vec<i32>, instructions: &Vec<(String, String)>) {
     let mut curr_pos: usize = 100;
     let mut instr_idx: usize = 0;
-
-    while instr_idx < instructions.len() {
+    let mut reps:i32 = 0;
+    while reps <= 1000 {
         let cell = tape[curr_pos];
         let instr_str = if cell == 0 {
             &instructions[instr_idx].0
@@ -64,6 +67,10 @@ fn execute_instructions(tape: &mut Vec<i32>, instructions: &Vec<(String, String)
         println!("Executing instruction at {}: {}", instr_idx, instr_str);
 
         let chars: Vec<char> = instr_str.chars().collect();
+        if instr_str == "HLT" {
+            println!("Halting");
+            break;
+        }
         let write_val = chars[0].to_digit(10).unwrap() as i32;
         let direction = chars[1];
         let next_instr = chars[2].to_digit(10).unwrap() as usize;
@@ -73,16 +80,16 @@ fn execute_instructions(tape: &mut Vec<i32>, instructions: &Vec<(String, String)
         match direction {
             'L' => {
                 if curr_pos == 0 {
-                    println!("Reached beginning of tape. Halting.");
-                    break;
+                    tape.insert(0, 0);
+                    curr_pos = 1;
                 }
                 curr_pos -= 1;
             },
             'R' => {
                 curr_pos += 1;
                 if curr_pos >= tape.len() {
-                    println!("Reached end of tape. Halting.");
-                    break;
+                    tape.push(0);
+                    curr_pos = tape.len() - 1;
                 }
             },
             _ => {
@@ -92,9 +99,13 @@ fn execute_instructions(tape: &mut Vec<i32>, instructions: &Vec<(String, String)
         }
 
         instr_idx = next_instr;
-        println!("Tape: {:?}", &tape[95..105]); // Show small window for clarity
+    println!("Repetition: {}", reps);
+    let start = curr_pos.saturating_sub(5); // Avoids underflow
+    let end = usize::min(curr_pos + 5, tape.len());
+    println!("Tape: {:?}", &tape[start..end]);
+        reps += 1;
     }
 
-    println!("Final tape (excerpt): {:?}", &tape[95..105]);
+    println!("Final tape : {:?}", tape);
 }
 
